@@ -29,7 +29,7 @@ const Login = () => {
   useEffect(() => {
     if (user !== undefined) {
       localStorage.setItem("userId", user.id.toString());
-      navigate("/");
+      navigate("/learning");
     }
   }, [user]);
 
