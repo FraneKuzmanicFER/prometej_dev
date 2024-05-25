@@ -2,8 +2,8 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import HomePage from "./HomePage";
 import Learning from "./Learning";
 import Login from "./Login";
-import MyQuizes from "./MyQuizes";
-import Quizes from "./Quizes";
+import MyQuizzes from "./MyQuizzes";
+import Quizzes from "./Quizzes";
 import Exam from "./Exam";
 import MakeQuiz from "./MakeQuiz";
 import Register from "./Register";
@@ -25,8 +25,8 @@ export const appRouter = createBrowserRouter([
     children: [
       { path: "learning", element: <Learning /> },
       { path: "learning/:id", element: <Period /> },
-      { path: "quizes", element: <Quizes /> },
-      { path: "my-quizes", element: <MyQuizes /> },
+      { path: "quizzes", element: <Quizzes /> },
+      { path: "my-quizzes", element: <MyQuizzes /> },
       // other routes...
     ],
   },

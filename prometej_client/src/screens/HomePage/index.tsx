@@ -58,7 +58,10 @@ export default function HomePage() {
         </DrawerHeader>
         <Sidebar toggle={toggle} user={user} authenticated={authenticated} />
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3, overflowY: "auto" }}>
+      <Box
+        component="main"
+        sx={{ flexGrow: 1, padding: 3, paddingBottom: 1, overflowY: "auto" }}
+      >
         <DrawerHeader />
         <Outlet />
       </Box>

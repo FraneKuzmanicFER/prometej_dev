@@ -65,14 +65,14 @@ export default function Sidebar({ toggle, user, authenticated }: SidebarProps) {
         </ListItemButton>
       </ListItem>
       <ListItem
-        key={"quizes"}
+        key={"quizzes"}
         sx={{ display: "block" }}
         className={`sidebar-item${
-          selectedItem === "quizes" ? "-selected" : ""
+          selectedItem === "quizzes" ? "-selected" : ""
         }`}
       >
         <ListItemButton
-          onClick={() => handleItemClick("quizes")}
+          onClick={() => handleItemClick("quizzes")}
           sx={{
             minHeight: 48,
             justifyContent: toggle ? "initial" : "center",
@@ -84,7 +84,7 @@ export default function Sidebar({ toggle, user, authenticated }: SidebarProps) {
               minWidth: 0,
               mr: toggle ? 3 : "auto",
               justifyContent: "center",
-              color: selectedItem === "quizes" ? "black" : "white",
+              color: selectedItem === "quizzes" ? "black" : "white",
             }}
           >
             <QuizIcon />
@@ -95,14 +95,14 @@ export default function Sidebar({ toggle, user, authenticated }: SidebarProps) {
       {authenticated &&
         (user?.role == ROLE.Teacher || user?.role === ROLE.Admin) && (
           <ListItem
-            key={"my-quizes"}
+            key={"my-quizzes"}
             sx={{ display: "block" }}
             className={`sidebar-item${
-              selectedItem === "my-quizes" ? "-selected" : ""
+              selectedItem === "my-quizzes" ? "-selected" : ""
             }`}
           >
             <ListItemButton
-              onClick={() => handleItemClick("my-quizes")}
+              onClick={() => handleItemClick("my-quizzes")}
               sx={{
                 minHeight: 48,
                 justifyContent: toggle ? "initial" : "center",
@@ -114,7 +114,7 @@ export default function Sidebar({ toggle, user, authenticated }: SidebarProps) {
                   minWidth: 0,
                   mr: toggle ? 3 : "auto",
                   justifyContent: "center",
-                  color: selectedItem === "my-quizes" ? "black" : "white",
+                  color: selectedItem === "my-quizzes" ? "black" : "white",
                 }}
               >
                 <PersonIcon />
