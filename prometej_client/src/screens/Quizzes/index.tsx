@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { RootState, useAppDispatch } from "../../store/store";
 import { fetchAllPublicQuizzes } from "../../store/slices/quizSlice";
 import { useSelector } from "react-redux";
-import { quizBaseModel } from "../../types/models/Quiz";
+import { QuizBaseModel } from "../../types/models/Quiz";
 import "./styles.css";
 
 export default function Quizzes() {
@@ -19,7 +19,7 @@ export default function Quizzes() {
 
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts: quizBaseModel[] = quizzes
+  const currentPosts: QuizBaseModel[] = quizzes
     ? quizzes.slice(indexOfFirstPost, indexOfLastPost)
     : [];
 

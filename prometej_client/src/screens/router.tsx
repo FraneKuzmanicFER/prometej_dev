@@ -9,6 +9,7 @@ import MakeQuiz from "./MakeQuiz";
 import Register from "./Register";
 import Period from "./Period";
 import { Navigate, createBrowserRouter } from "react-router-dom";
+import EditQuiz from "./MakeQuiz/EditQuiz";
 
 export const appRouter = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ export const appRouter = createBrowserRouter([
   {
     path: "/make-quiz",
     element: <MakeQuiz />,
+  },
+  {
+    path: "/edit-quiz/:id",
+    element: <EditQuiz />,
   },
 ]);
 

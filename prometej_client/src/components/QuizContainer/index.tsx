@@ -7,6 +7,7 @@ import { Avatar, CardActionArea } from "@mui/material";
 interface Props {
   name: string;
   authorName: string;
+  entryCode?: number;
 }
 
 function stringToColor(string: string) {
@@ -37,7 +38,12 @@ export default function QuizContainer(props: Props) {
           title={<Typography variant="h6">{props.name}</Typography>}
         />
         <CardContent
-          sx={{ display: "flex", alignItems: "center", marginTop: 4 }}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            marginTop: 4,
+            position: "relative",
+          }}
         >
           <Avatar sx={{ bgcolor: stringToColor(props.authorName) }}>
             {props.authorName[0].toUpperCase()}
@@ -50,6 +56,25 @@ export default function QuizContainer(props: Props) {
           >
             {props.authorName}
           </Typography>
+          {props.entryCode && (
+            <Typography
+              variant="h6"
+              sx={{
+                fontSize: 14,
+                position: "absolute",
+                bottom: 0,
+                right: 0,
+                padding: 1,
+              }}
+            >
+              Ulazni kod:
+              <span
+                style={{ color: "#553b08", marginLeft: 5, fontStyle: "italic" }}
+              >
+                {props.entryCode}
+              </span>
+            </Typography>
+          )}
         </CardContent>
       </CardActionArea>
     </Card>

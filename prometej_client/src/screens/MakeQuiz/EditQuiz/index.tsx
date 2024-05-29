@@ -15,44 +15,42 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import "./styles.css";
-import QuestionContainer from "../../components/QuestionContainer";
+import QuestionContainer from "../../../components/QuestionContainer";
 import {
-  QuestionCreateRequest,
-  QuizCreateRequest,
-} from "../../types/models/Quiz";
+  QuestionEditRequest,
+  QuizEditRequest,
+} from "../../../types/models/Quiz";
 import AddIcon from "@mui/icons-material/Add";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Cancel";
 import React from "react";
-import { createQuiz } from "../../store/slices/quizSlice";
+import { fetchQuiz, updateQuiz } from "../../../store/slices/quizSlice";
 import { useSelector } from "react-redux";
-import { RootState, useAppDispatch } from "../../store/store";
-import { useNavigate } from "react-router-dom";
+import { RootState, useAppDispatch } from "../../../store/store";
+import { useNavigate, useParams } from "react-router-dom";
 
-export default function MakeQuiz() {
-  const [quizQuestions, setQuizQuestions] = useState<QuestionCreateRequest[]>(
-    []
-  );
+export default function EditQuiz() {
+  const [quizQuestions, setQuizQuestions] = useState<QuestionEditRequest[]>([]);
+  const { quiz } = useSelector((state: RootState) => state.quiz);
   const [selected, setSelected] = useState<number>(0);
-  const [currentQuestion, setCurrentQuestion] = useState<QuestionCreateRequest>(
-    {
-      questionTitle: "",
-      firstAnswer: "",
-      secondAnswer: "",
-      thirdAnswer: "",
-      fourthAnswer: "",
-      correctAnswer: "",
-      hintText: "",
-      exploreMore: "",
-    }
-  );
+  const [currentQuestion, setCurrentQuestion] = useState<QuestionEditRequest>({
+    id: 0,
+    questionTitle: "",
+    firstAnswer: "",
+    secondAnswer: "",
+    thirdAnswer: "",
+    fourthAnswer: "",
+    correctAnswer: "",
+    hintText: "",
+    exploreMore: "",
+  });
   const [quizTitle, setQuizTitle] = useState<string>("");
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [inputDrawer, setInputDrawer] = useState<boolean>(false);
-  const { user } = useSelector((state: RootState) => state.user);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { id } = useParams();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -63,32 +61,31 @@ export default function MakeQuiz() {
   };
 
   const handleCancel = () => {
-    navigate("/learning");
-  };
-
-  const generateRandomNumber = () => {
-    return Math.floor(10000 + Math.random() * 90000);
+    navigate("/my-quizzes");
   };
 
   const saveQuiz = () => {
-    const entryCode = generateRandomNumber();
-    const quiz: QuizCreateRequest = {
+    const updatedQuiz: QuizEditRequest = {
+      id: quiz?.id || 0,
       title: quizTitle,
-      isPrivate: true,
-      creatorId: user ? user.id : 0,
-      entryCode: entryCode,
+      isPrivate: quiz?.isPrivate || false,
+      creatorId: quiz?.creatorId || 0,
+      entryCode: quiz?.entryCode || undefined,
     };
-    const questions: QuestionCreateRequest[] = [...quizQuestions];
+    const questions: QuestionEditRequest[] = [...quizQuestions];
     setIsSaving(true);
-    dispatch(createQuiz({ quiz: quiz, questions: questions })).then(() => {
-      setIsSaving(false);
-      setInputDrawer(false);
-      navigate("/learning");
-    });
+    dispatch(updateQuiz({ quiz: updatedQuiz, questions: questions })).then(
+      () => {
+        setIsSaving(false);
+        setInputDrawer(false);
+        navigate("/my-quizzes");
+      }
+    );
   };
 
   const addQuestion = () => {
-    const newQuestion: QuestionCreateRequest = {
+    const newQuestion: QuestionEditRequest = {
+      id: 0,
       questionTitle: "",
       firstAnswer: "",
       secondAnswer: "",
@@ -117,8 +114,16 @@ export default function MakeQuiz() {
   };
 
   useEffect(() => {
-    setQuizQuestions([...quizQuestions, currentQuestion]);
+    dispatch(fetchQuiz(Number(id)));
   }, []);
+
+  useEffect(() => {
+    if (quiz) {
+      setQuizTitle(quiz.title);
+      setQuizQuestions(quiz.questions);
+      setCurrentQuestion(quiz.questions[0]);
+    }
+  }, [quiz]);
 
   useEffect(() => {
     const container = document.querySelector(".questions-nav");
@@ -129,7 +134,7 @@ export default function MakeQuiz() {
 
   const updateQuestion = (
     questionNo: number,
-    updates: Partial<QuestionCreateRequest>
+    updates: Partial<QuestionEditRequest>
   ) => {
     setQuizQuestions((prevQuestions) =>
       prevQuestions.map((question, index) =>
@@ -147,7 +152,7 @@ export default function MakeQuiz() {
         handleQuestionChange={updateQuestion}
       />
       <Box className="questions-nav">
-        {quizQuestions.map((question: QuestionCreateRequest, index) => (
+        {quizQuestions.map((question: QuestionEditRequest, index) => (
           <Paper
             className={`question-nav-container ${
               selected === index ? "selected" : ""
