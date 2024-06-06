@@ -5,6 +5,7 @@ import { RootState, useAppDispatch } from "../../store/store";
 import { fetchAllPublicQuizzes } from "../../store/slices/quizSlice";
 import { useSelector } from "react-redux";
 import { QuizBaseModel } from "../../types/models/Quiz";
+import { useNavigate } from "react-router-dom";
 import "./styles.css";
 
 export default function Quizzes() {
@@ -12,6 +13,7 @@ export default function Quizzes() {
   const [postsPerPage] = useState(9);
   const { quizzes } = useSelector((state: RootState) => state.quiz);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchAllPublicQuizzes());
@@ -42,7 +44,14 @@ export default function Quizzes() {
         columns={{ xs: 4, sm: 8, md: 12 }}
       >
         {currentPosts.map((quiz) => (
-          <Grid item xs={2} sm={4} md={4} key={quiz.id}>
+          <Grid
+            item
+            xs={2}
+            sm={4}
+            md={4}
+            key={quiz.id}
+            onClick={() => navigate(`/play-quiz/${quiz.id}`)}
+          >
             <QuizContainer name={quiz.title} authorName={quiz.creatorName} />
           </Grid>
         ))}

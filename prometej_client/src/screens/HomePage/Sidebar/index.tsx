@@ -20,9 +20,15 @@ interface SidebarProps {
   toggle: boolean;
   user: UserViewModel | undefined;
   authenticated: boolean | undefined;
+  setOpenJoinQuizDialog: (value: boolean) => void;
 }
 
-export default function Sidebar({ toggle, user, authenticated }: SidebarProps) {
+export default function Sidebar({
+  toggle,
+  user,
+  authenticated,
+  setOpenJoinQuizDialog,
+}: SidebarProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedItem, setSelectedItem] = useState(
@@ -166,7 +172,7 @@ export default function Sidebar({ toggle, user, authenticated }: SidebarProps) {
         className={`sidebar-item${selectedItem === "exam" ? "-selected" : ""}`}
       >
         <ListItemButton
-          onClick={() => handleItemClick("exam")}
+          onClick={() => setOpenJoinQuizDialog(true)}
           sx={{
             minHeight: 48,
             justifyContent: toggle ? "initial" : "center",

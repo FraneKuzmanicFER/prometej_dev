@@ -1,11 +1,12 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import QuizService from "../../services/routes/quiz";
-import { QuestionCreateRequest, QuestionEditRequest, QuizBaseModel, QuizCreateRequest, QuizEditRequest, QuizViewModel } from "../../types/models/Quiz";
+import { AnswerCreateRequest, QuestionCreateRequest, QuestionEditRequest, QuizBaseModel, QuizCreateRequest, QuizEditRequest, QuizGameCreateRequest, QuizGameViewModel, QuizViewModel } from "../../types/models/Quiz";
 
 interface QuizState {
     quizzes: QuizBaseModel[] | undefined;
     quiz: QuizViewModel | undefined;
+    quizGame: QuizGameViewModel | undefined;
 }
 
 export interface CreateQuizPayload {
@@ -19,9 +20,15 @@ export interface UpdateQuizPayload {
 
 }
 
+export interface SubmitQuizPayload {
+    quizGame: QuizGameCreateRequest;
+    answers: AnswerCreateRequest[];
+}
+
 const initialState: QuizState = {
     quizzes: undefined,
     quiz: undefined,
+    quizGame: undefined,
 };
 
 const fetchAllPublicQuizzes = createAsyncThunk(
@@ -43,6 +50,14 @@ const fetchQuiz = createAsyncThunk(
     'quiz/get',
     async (quizId: number) => {
         const response = await QuizService.get(quizId);
+        return response.data;
+    }
+);
+
+const fetchQuizByCode = createAsyncThunk(
+    'quiz/getByCode',
+    async (quizCode: string) => {
+        const response = await QuizService.getByCode(quizCode);
         return response.data;
     }
 );
@@ -71,6 +86,22 @@ const deleteQuiz = createAsyncThunk(
     }
 );
 
+const submitQuiz = createAsyncThunk(
+    'quiz/submit',
+    async (data: SubmitQuizPayload) => {
+        const response = await QuizService.submit(data);
+        return response.data;
+    }
+);
+
+const getQuizAnalytics = createAsyncThunk(
+    'quiz/getAnalytics',
+    async (quizId: number) => {
+        const response = await QuizService.getQuizAnalytics(quizId);
+        return response.data;
+    }
+);
+
 const quizSlice = createSlice({
   name: "quiz",
   initialState,
@@ -86,6 +117,12 @@ const quizSlice = createSlice({
     builder.addCase(fetchQuiz.fulfilled, (state, action: PayloadAction<QuizViewModel>) => {
         state.quiz = action.payload; 
     });
+    builder.addCase(getQuizAnalytics.fulfilled, (state, action: PayloadAction<QuizGameViewModel>) => {
+        state.quizGame = action.payload;
+    });
+    builder.addCase(fetchQuizByCode.fulfilled, (state, action: PayloadAction<QuizViewModel>) => {
+        state.quiz = action.payload;
+    });
   }
 });
 
@@ -96,6 +133,9 @@ export {
     updateQuiz,
     deleteQuiz,
     fetchQuiz,
+    submitQuiz,
+    getQuizAnalytics,
+    fetchQuizByCode,
 };
 
 export default quizSlice.reducer;

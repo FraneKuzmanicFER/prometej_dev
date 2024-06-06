@@ -4,12 +4,12 @@ import Learning from "./Learning";
 import Login from "./Login";
 import MyQuizzes from "./MyQuizzes";
 import Quizzes from "./Quizzes";
-import Exam from "./Exam";
 import MakeQuiz from "./MakeQuiz";
 import Register from "./Register";
 import Period from "./Period";
 import { Navigate, createBrowserRouter } from "react-router-dom";
 import EditQuiz from "./MakeQuiz/EditQuiz";
+import PlayQuiz from "./PlayQuiz";
 
 export const appRouter = createBrowserRouter([
   {
@@ -40,8 +40,8 @@ export const appRouter = createBrowserRouter([
     element: <Login />,
   },
   {
-    path: "/exam",
-    element: <Exam />,
+    path: "/play-quiz/:id",
+    element: <PlayQuiz />,
   },
   {
     path: "/make-quiz",

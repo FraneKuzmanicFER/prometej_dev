@@ -13,11 +13,13 @@ import { Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import logo from "/logo.svg";
+import JoinQuiz from "../../components/JoinQuiz";
 
 export default function HomePage() {
   const theme = useTheme();
   const [toggle, setToggle] = React.useState(true);
   const { authenticated, user } = useSelector((state: RootState) => state.user);
+  const [openJoinQuizDialog, setOpenJoinQuizDialog] = React.useState(false);
 
   const toggleSidebar = () => {
     setToggle(!toggle);
@@ -56,7 +58,12 @@ export default function HomePage() {
             )}
           </IconButton>
         </DrawerHeader>
-        <Sidebar toggle={toggle} user={user} authenticated={authenticated} />
+        <Sidebar
+          setOpenJoinQuizDialog={setOpenJoinQuizDialog}
+          toggle={toggle}
+          user={user}
+          authenticated={authenticated}
+        />
       </Drawer>
       <Box
         component="main"
@@ -65,6 +72,9 @@ export default function HomePage() {
         <DrawerHeader />
         <Outlet />
       </Box>
+      {openJoinQuizDialog && (
+        <JoinQuiz setOpenJoinQuizDialog={setOpenJoinQuizDialog} />
+      )}
     </ScreenWrapper>
   );
 }

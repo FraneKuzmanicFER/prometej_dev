@@ -65,3 +65,35 @@ export interface QuestionViewModel {
     hintText:string
     exploreMore:string
 }
+
+export interface AnswerCreateRequest{
+    questionId:number;
+    answer:string;
+    correctAnswer:string;
+}
+
+export interface AnswerViewModel {
+    id: number
+    quizGameId: number;
+    questionId:number;
+    answer:string;
+    correctAnswer:string;
+}
+
+export interface QuizGameCreateRequest {
+    quizId: number;
+    userId?: number;
+    userName?: string;
+    score: number;
+    datePlayed: Date;
+}
+
+export interface QuizGameViewModel {
+    id: number;
+    quizId: number;
+    userId?: number;
+    userName: string;
+    score: number;
+    datePlayed: Date;
+    answers: AnswerViewModel[];
+}
