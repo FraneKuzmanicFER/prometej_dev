@@ -14,3 +14,8 @@ export interface PeriodContentViewModel{
     periodId: string;
     content: string;
 }
+
+export interface PeriodSearchContent{
+    periodId: number;
+    searchContent: string;
+}

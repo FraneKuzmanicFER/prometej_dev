@@ -1,10 +1,14 @@
 import {
   Box,
+  Button,
   Grid,
   IconButton,
   Menu,
   MenuItem,
   Pagination,
+  Paper,
+  TextField,
+  Typography,
 } from "@mui/material";
 import QuizContainer from "../../components/QuizContainer";
 import { useEffect, useState } from "react";
@@ -28,6 +32,9 @@ export default function MyQuizzes() {
   const { user } = useSelector((state: RootState) => state.user);
   const dispatch = useAppDispatch();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [inputDrawer, setInputDrawer] = useState<boolean>(false);
+  const [quizTitle, setQuizTitle] = useState<string>("");
+  const [currentQuiz, setCurrentQuiz] = useState<QuizBaseModel | null>(null);
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -73,6 +80,22 @@ export default function MyQuizzes() {
       });
     }
     handleClose();
+  };
+
+  const handleNameChange = () => {
+    if (currentQuiz && user) {
+      const updatedQuiz = {
+        id: currentQuiz.id,
+        title: quizTitle,
+        creatorId: user.id,
+        isPrivate: currentQuiz.isPrivate,
+        entryCode: currentQuiz.entryCode,
+      };
+      dispatch(updateQuiz({ quiz: updatedQuiz })).then(() => {
+        if (user) dispatch(fetchAllUserQuizzes(user.id));
+      });
+    }
+    setInputDrawer(false);
   };
 
   useEffect(() => {
@@ -172,6 +195,16 @@ export default function MyQuizzes() {
                 <MenuItem
                   onClick={(event) => {
                     event.stopPropagation();
+                    setCurrentQuiz(quiz);
+                    setInputDrawer(true);
+                    handleClose();
+                  }}
+                >
+                  Promijeni ime
+                </MenuItem>
+                <MenuItem
+                  onClick={(event) => {
+                    event.stopPropagation();
                     handleDelete(quiz.id);
                   }}
                 >
@@ -194,6 +227,46 @@ export default function MyQuizzes() {
           transform: "translateX(-50%)",
         }}
       />
+      {inputDrawer && (
+        <Paper elevation={24} className="title-input">
+          <Typography sx={{ marginTop: "1rem" }} variant="h5">
+            Unesite naslov kviza
+          </Typography>
+          <TextField
+            sx={{ marginTop: "3.5rem" }}
+            type="text"
+            placeholder="Naslov kviza"
+            fullWidth
+            required
+            value={quizTitle}
+            onChange={(e) => setQuizTitle(e.target.value)}
+          />
+          <Button
+            variant="contained"
+            onClick={() => {
+              quizTitle ? handleNameChange() : null;
+            }}
+            style={{
+              backgroundColor: "#553b08",
+              marginTop: "2rem",
+              width: "80%",
+            }}
+          >
+            Spremi
+          </Button>
+          <Button
+            variant="contained"
+            style={{
+              backgroundColor: "#553b08",
+              marginTop: "1rem",
+              width: "80%",
+            }}
+            onClick={() => setInputDrawer(false)}
+          >
+            Odustani
+          </Button>
+        </Paper>
+      )}
     </Box>
   );
 }

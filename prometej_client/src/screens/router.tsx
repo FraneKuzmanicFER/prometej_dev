@@ -7,6 +7,7 @@ import Quizzes from "./Quizzes";
 import MakeQuiz from "./MakeQuiz";
 import Register from "./Register";
 import Period from "./Period";
+import Search from "./Search";
 import { Navigate, createBrowserRouter } from "react-router-dom";
 import EditQuiz from "./MakeQuiz/EditQuiz";
 import PlayQuiz from "./PlayQuiz";
@@ -25,6 +26,7 @@ export const appRouter = createBrowserRouter([
     ),
     children: [
       { path: "learning", element: <Learning /> },
+      { path: "search", element: <Search /> },
       { path: "learning/:id", element: <Period /> },
       { path: "quizzes", element: <Quizzes /> },
       { path: "my-quizzes", element: <MyQuizzes /> },

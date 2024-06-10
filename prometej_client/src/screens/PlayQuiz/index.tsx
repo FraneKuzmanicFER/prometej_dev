@@ -200,23 +200,24 @@ export default function PlayQuiz() {
             <Typography>
               {currentQuestionNo + 1}. od {totalQuestionNo}
             </Typography>
-            {currentQuestionNo + 1 === totalQuestionNo ? (
-              <Button
-                onClick={() => handleShowScore()}
-                disabled={!currentQuestionAnswered}
-                variant="contained"
-              >
-                Završi
-              </Button>
-            ) : (
-              <Button
-                onClick={() => handleMoveForward()}
-                disabled={!currentQuestionAnswered}
-                variant="contained"
-              >
-                Dalje
-              </Button>
-            )}
+            {currentQuestionNo + 1 === totalQuestionNo
+              ? currentQuestionAnswered && (
+                  <Button
+                    onClick={() => handleShowScore()}
+                    disabled={!currentQuestionAnswered}
+                    variant="contained"
+                  >
+                    Završi
+                  </Button>
+                )
+              : currentQuestionAnswered && (
+                  <Button
+                    onClick={() => handleMoveForward()}
+                    variant="contained"
+                  >
+                    Dalje
+                  </Button>
+                )}
           </Box>
         </Paper>
       )}

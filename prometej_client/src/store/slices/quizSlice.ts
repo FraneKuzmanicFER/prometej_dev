@@ -46,6 +46,14 @@ const fetchAllUserQuizzes = createAsyncThunk(
     }
 );
 
+const searchQuizzes = createAsyncThunk(
+    'quiz/search',
+    async (query: string) => {
+        const response = await QuizService.search(query);
+        return response.data;
+    }
+);
+
 const fetchQuiz = createAsyncThunk(
     'quiz/get',
     async (quizId: number) => {
@@ -114,6 +122,9 @@ const quizSlice = createSlice({
     builder.addCase(fetchAllUserQuizzes.fulfilled, (state, action: PayloadAction<QuizBaseModel[]>) => {
         state.quizzes = action.payload;
     });
+    builder.addCase(searchQuizzes.fulfilled, (state, action: PayloadAction<QuizBaseModel[]>) => {
+        state.quizzes = action.payload;
+    });
     builder.addCase(fetchQuiz.fulfilled, (state, action: PayloadAction<QuizViewModel>) => {
         state.quiz = action.payload; 
     });
@@ -136,6 +147,7 @@ export {
     submitQuiz,
     getQuizAnalytics,
     fetchQuizByCode,
+    searchQuizzes,
 };
 
 export default quizSlice.reducer;

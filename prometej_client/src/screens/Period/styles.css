@@ -18,6 +18,10 @@
     margin-bottom: 0.5rem;
     margin-top: 3rem;
 }
+
+.content img{
+    margin-right: 20px;
+}
 .speed-dial > button{
     background-color: #553b08;
 }

@@ -1,14 +1,16 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import periodService from "../../services/routes/period";
-import { PeriodContentViewModel, PeriodContentEditRequest } from "../../types/models/Period";
+import { PeriodContentViewModel, PeriodContentEditRequest, PeriodSearchContent } from "../../types/models/Period";
 
 interface PeriodState {
     periodContent: PeriodContentViewModel | undefined;
+    searchContent: PeriodSearchContent[] | undefined;
 }
 
 const initialState: PeriodState = {
     periodContent: undefined,
+    searchContent: undefined,
 };
 
 const fetchPeriodContent = createAsyncThunk(
@@ -26,6 +28,14 @@ const editPeriodContent = createAsyncThunk(
     }
 );
 
+const searchPeriodContent = createAsyncThunk(
+    'period/searchPeriodContent',
+    async (query: string) => {
+        const response = await periodService.search(query);
+        return response.data;
+    }
+);
+
 const periodSlice = createSlice({
   name: "period",
   initialState,
@@ -37,6 +47,10 @@ const periodSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchPeriodContent.fulfilled, (state, action: PayloadAction<PeriodContentViewModel>) => {
       state.periodContent = action.payload;
+      state.searchContent = undefined;
+    });
+    builder.addCase(searchPeriodContent.fulfilled, (state, action: PayloadAction<PeriodSearchContent[]>) => {
+      state.searchContent = action.payload;
     });
   }
 });
@@ -49,6 +63,7 @@ export const {
 export {
     fetchPeriodContent,
     editPeriodContent,
+    searchPeriodContent,
 };
 
 export default periodSlice.reducer;

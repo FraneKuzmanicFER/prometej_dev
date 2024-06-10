@@ -11,8 +11,11 @@ import { AccountCircle } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import React from "react";
-import { RootState, store } from "../../../store/store";
+import { RootState, store, useAppDispatch } from "../../../store/store";
 import { clearUser } from "../../../store/slices/userSlice";
+import { useLocation } from "react-router-dom";
+import { searchQuizzes } from "../../../store/slices/quizSlice";
+import { searchPeriodContent } from "../../../store/slices/periodSlice";
 
 interface HeaderProps {
   toggle: boolean;
@@ -22,7 +25,11 @@ interface HeaderProps {
 export default function Header({ toggle, toggleSidebar }: HeaderProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const { authenticated } = useSelector((state: RootState) => state.user);
+  const [search, setSearch] = React.useState<string>("");
   const navigate = useNavigate();
+  const location = useLocation();
+  const pathname = location.pathname;
+  const dispatch = useAppDispatch();
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -30,6 +37,16 @@ export default function Header({ toggle, toggleSidebar }: HeaderProps) {
 
   const handleCloseUserMenu = () => {
     setAnchorEl(null);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      if (pathname.includes("/learning") || pathname.includes("/search")) {
+        dispatch(searchPeriodContent(search)).then(() => navigate("/search"));
+      } else if (pathname.includes("/quizzes")) {
+        dispatch(searchQuizzes(search));
+      }
+    }
   };
 
   const userMenu = () => (
@@ -97,6 +114,9 @@ export default function Header({ toggle, toggleSidebar }: HeaderProps) {
           <StyledInputBase
             placeholder="Pretraži..."
             inputProps={{ "aria-label": "search" }}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={handleKeyDown}
           />
         </Search>
         <Box>
