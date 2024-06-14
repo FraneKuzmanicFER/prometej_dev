@@ -210,6 +210,14 @@ export default function MyQuizzes() {
                 >
                   Izbriši
                 </MenuItem>
+                <MenuItem
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    navigate(`/quiz-details/${quiz.id}`);
+                  }}
+                >
+                  Detalji
+                </MenuItem>
               </Menu>
             </Box>
           </Grid>

@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import {
   Box,
   Container,
+  Drawer,
   SpeedDial,
   SpeedDialAction,
   SpeedDialIcon,
@@ -21,6 +22,8 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import "./styles.css";
 import "react-quill/dist/quill.snow.css";
 import { PeriodContentEditRequest } from "../../types/models/Period";
+import ForumIcon from "@mui/icons-material/Forum";
+import DiscussionGroup from "../DiscussionGroup";
 
 const toolbarOptions = [
   ["bold", "italic", "underline", "strike"], // toggled buttons
@@ -72,6 +75,7 @@ export default function Period() {
   const [value, setValue] = useState("");
   const [text, setText] = useState("");
   const [isEdit, setIsEdit] = useState(false);
+  const [isComment, setIsComment] = useState(false);
 
   useEffect(() => {
     if (id) dispatch(fetchPeriodContent(id));
@@ -167,6 +171,12 @@ export default function Period() {
               tooltipTitle={"Uredi"}
               onClick={() => setIsEdit(true)}
             />
+            <SpeedDialAction
+              key={"Komentiraj"}
+              icon={<ForumIcon />}
+              tooltipTitle={"Komentiraj"}
+              onClick={() => setIsComment(true)}
+            />
           </SpeedDial>
           <Box
             className="content"
@@ -175,6 +185,15 @@ export default function Period() {
             }}
           />
         </Container>
+      )}
+      {isComment && (
+        <Drawer
+          onClose={() => setIsComment(false)}
+          open={isComment}
+          anchor="left"
+        >
+          <DiscussionGroup />
+        </Drawer>
       )}
     </Box>
   );

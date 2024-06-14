@@ -65,7 +65,7 @@ export default function PlayQuiz() {
         ...quizAnswers,
         {
           questionId: currentQuestion.id,
-          answer,
+          answerText: answer,
           correctAnswer: currentQuestion.correctAnswer,
         },
       ]);

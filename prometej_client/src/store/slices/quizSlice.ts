@@ -6,7 +6,7 @@ import { AnswerCreateRequest, QuestionCreateRequest, QuestionEditRequest, QuizBa
 interface QuizState {
     quizzes: QuizBaseModel[] | undefined;
     quiz: QuizViewModel | undefined;
-    quizGame: QuizGameViewModel | undefined;
+    quizGames: QuizGameViewModel[] | undefined;
 }
 
 export interface CreateQuizPayload {
@@ -28,7 +28,7 @@ export interface SubmitQuizPayload {
 const initialState: QuizState = {
     quizzes: undefined,
     quiz: undefined,
-    quizGame: undefined,
+    quizGames: undefined,
 };
 
 const fetchAllPublicQuizzes = createAsyncThunk(
@@ -128,8 +128,8 @@ const quizSlice = createSlice({
     builder.addCase(fetchQuiz.fulfilled, (state, action: PayloadAction<QuizViewModel>) => {
         state.quiz = action.payload; 
     });
-    builder.addCase(getQuizAnalytics.fulfilled, (state, action: PayloadAction<QuizGameViewModel>) => {
-        state.quizGame = action.payload;
+    builder.addCase(getQuizAnalytics.fulfilled, (state, action: PayloadAction<QuizGameViewModel[]>) => {
+        state.quizGames = action.payload;
     });
     builder.addCase(fetchQuizByCode.fulfilled, (state, action: PayloadAction<QuizViewModel>) => {
         state.quiz = action.payload;

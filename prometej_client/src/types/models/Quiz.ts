@@ -68,7 +68,7 @@ export interface QuestionViewModel {
 
 export interface AnswerCreateRequest{
     questionId:number;
-    answer:string;
+    answerText:string;
     correctAnswer:string;
 }
 
@@ -76,7 +76,7 @@ export interface AnswerViewModel {
     id: number
     quizGameId: number;
     questionId:number;
-    answer:string;
+    answerText:string;
     correctAnswer:string;
 }
 

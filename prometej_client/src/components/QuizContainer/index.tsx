@@ -10,7 +10,7 @@ interface Props {
   entryCode?: number;
 }
 
-function stringToColor(string: string) {
+export function stringToColor(string: string) {
   let hash = 0;
   let i;
 

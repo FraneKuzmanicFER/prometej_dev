@@ -11,6 +11,6 @@
     align-items: center;
     z-index: 1000; /* Ensure it is on top of other elements */
     width: 400px;
-    height: 400px;
+    height: 500px;
     text-align: center;
 }
